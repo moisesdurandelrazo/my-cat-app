@@ -5,21 +5,21 @@ type CatFact = {
   length: number;
 };
 
-type RandomUser = {
-  name: {
-    first: string;
-    last: string;
-  };
-  picture: {
-    thumbnail: string;
-  };
-};
 
 type Page = {
-  data: {
+  data: Array<{
     fact: string;
-    user: RandomUser;
-  }[];
+    length: number;
+    user: {
+      name: {
+        first: string;
+        last: string;
+      };
+      picture: {
+        thumbnail: string;
+      };
+    };
+  }>;
   next_page_url: string | null;
 };
 

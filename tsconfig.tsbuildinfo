@@ -1,1 +1,1 @@
-{"root":["./vite.config.ts","./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/catfactslist.tsx","./src/hooks/usecatfacts.ts"],"errors":true,"version":"5.7.2"}
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/catfactslist.tsx","./src/hooks/usecatfacts.ts"],"errors":true,"version":"5.7.2"}

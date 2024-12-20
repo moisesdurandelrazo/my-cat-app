@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useRef, useCallback } from "react";
 import useCatFactsWithUsers from "../hooks/useCatFacts";
 
 const CatFactsList = () => {
@@ -8,10 +8,11 @@ const CatFactsList = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    status,
+    isLoading,
+    isError,
   } = useCatFactsWithUsers();
 
-  const observerRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const lastFactRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -27,7 +28,7 @@ const CatFactsList = () => {
     [isFetchingNextPage, hasNextPage, fetchNextPage]
   );
 
-  if (status === "loading") {
+  if (isLoading) {
     return (
       <div>
         {[...Array(5)].map((_, i) => (
@@ -43,12 +44,12 @@ const CatFactsList = () => {
     );
   }
 
-  if (status === "error") return <p>Error: {(error as Error).message}</p>;
+  if (isError) return <p>Error: {(error as Error).message}</p>;
 
   return (
     <div className="p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data?.pages.map((page, i) => (
+        {data?.pages.map((page: any, i: number) => (
           <React.Fragment key={i}>
             {page.data.map((item, index) => {
               const isLastFact =
@@ -62,13 +63,12 @@ const CatFactsList = () => {
                   <div className="flex items-center mb-4">
                     <img
                       src={item.user.picture.thumbnail}
-                      alt={`${item.user?.name?.first} ${item.user?.name?.last}`}
+                      alt={`${item.user.name.first} ${item.user.name.last}`}
                       className="w-16 h-16 rounded-full border-2 border-blue-500"
                     />
                     <div className="ml-4">
                       <p className="text-lg font-bold text-gray-800">
-                        - {item.user?.name?.first || "Unknown"}{" "}
-                        {item.user?.name?.last || "User"}
+                        {item.user.name.first} {item.user.name.last}
                       </p>
                     </div>
                   </div>
