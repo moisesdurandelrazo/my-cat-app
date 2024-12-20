@@ -1,5 +1,6 @@
 import React, { useRef, useCallback } from "react";
 import useCatFactsWithUsers from "../hooks/useCatFacts";
+import { Item, Page } from "../types/types";
 
 const CatFactsList = () => {
   const {
@@ -17,7 +18,9 @@ const CatFactsList = () => {
   const lastFactRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (isFetchingNextPage) return;
-      if (observerRef.current) observerRef.current.disconnect();
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
       observerRef.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && hasNextPage) {
           fetchNextPage();
@@ -49,16 +52,16 @@ const CatFactsList = () => {
   return (
     <div className="p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data?.pages.map((page: any, i: number) => (
+        {data?.pages.map((page: Page, i: number) => (
           <React.Fragment key={i}>
-            {page.data.map((item: any, index: number) => {
+            {page.data.map((item: Item, index: number) => {
               const isLastFact =
                 i === data.pages.length - 1 && index === page.data.length - 1;
               return (
                 <div
                   key={index}
                   ref={isLastFact ? lastFactRef : null}
-                  className="max-w-sm w-full lg:max-w-full lg:flex"
+                  className="max-w-sm w-full lg:max-w-full lg:flex bg-white border rounded-lg shadow-md p-4"
                 >
                   <div className="flex items-center mb-4">
                     <img

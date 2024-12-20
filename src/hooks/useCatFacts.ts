@@ -1,60 +1,39 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { Page, Item } from "../types/types";
 
-type CatFact = {
-  fact: string;
-  length: number;
-};
-
-
-type Page = {
-  data: Array<{
-    fact: string;
-    length: number;
-    user: {
-      name: {
-        first: string;
-        last: string;
-      };
-      picture: {
-        thumbnail: string;
-      };
-    };
-  }>;
-  next_page_url: string | null;
-};
-
-const fetchCatFactsWithUsers = async ({ pageParam }: { pageParam?: string }): Promise<Page> => {
-  const url = pageParam || "https://catfact.ninja/facts";
-//   console.log(`Fetching facts from: ${url}`);
-  const res = await fetch(url);
+const fetchCatFactsWithUsers = async ({
+  pageParam = "1",
+}: {
+  pageParam?: string;
+}): Promise<Page> => {
+  const res = await fetch(`https://catfact.ninja/facts?page=${pageParam}`);
   if (!res.ok) throw new Error("Failed to fetch cat facts");
-  const data = await res.json();
 
-//   console.log(`Fetched facts:`, data);
+  const catFacts = await res.json();
 
-  const usersRes = await fetch(`https://randomuser.me/api/?results=${data.data.length}`);
-  if (!usersRes.ok) throw new Error("Failed to fetch users");
-  const usersData = await usersRes.json();
+  const usersRes = await fetch("https://randomuser.me/api?results=10");
+  if (!usersRes.ok) throw new Error("Failed to fetch random users");
 
-//   console.log(`Fetched users:`, usersData);
+  const users = await usersRes.json();
 
-  const combinedData = data.data.map((fact: CatFact, index: number) => ({
-    fact: fact.fact,
-    user: usersData.results[index],
-  }));
+  const dataWithUsers: Item[] = catFacts.data.map(
+    (fact: { fact: string; length: number }, i: number) => ({
+      ...fact,
+      user: users.results[i],
+    })
+  );
 
   return {
-    data: combinedData,
-    next_page_url: data.next_page_url,
+    data: dataWithUsers,
+    next_page_url: catFacts.next_page_url,
   };
 };
 
 const useCatFactsWithUsers = () => {
   return useInfiniteQuery<Page, Error>({
     queryKey: ["catFactsWithUsers"],
-    // @ts-ignore
     queryFn: fetchCatFactsWithUsers,
-    getNextPageParam: (lastPage) => lastPage.next_page_url,
+    getNextPageParam: (lastPage) => lastPage.next_page_url || undefined,
   });
 };
 

@@ -4,11 +4,13 @@ import useCatFactsWithUsers from "../hooks/useCatFacts";
 const CatFactsList = () => {
     const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, } = useCatFactsWithUsers();
     const observerRef = useRef(null);
+    // @ts-ignore
     const lastFactRef = useCallback((node) => {
         if (isFetchingNextPage)
             return;
-        if (observerRef.current)
-            observerRef.current.disconnect();
+        if (observerRef.current) {
+            observerRef.current.disconnect(); // @ts-ignore
+        }
         observerRef.current = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting && hasNextPage) {
                 fetchNextPage();
@@ -24,7 +26,7 @@ const CatFactsList = () => {
         return _jsxs("p", { children: ["Error: ", error.message] });
     return (_jsxs("div", { className: "p-6", children: [_jsx("div", { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6", children: data === null || data === void 0 ? void 0 : data.pages.map((page, i) => (_jsx(React.Fragment, { children: page.data.map((item, index) => {
                         const isLastFact = i === data.pages.length - 1 && index === page.data.length - 1;
-                        return (_jsxs("div", { ref: isLastFact ? lastFactRef : null, className: "max-w-sm w-full lg:max-w-full lg:flex", children: [_jsxs("div", { className: "flex items-center mb-4", children: [_jsx("img", { src: item.user.picture.thumbnail, alt: `${item.user.name.first} ${item.user.name.last}`, className: "w-16 h-16 rounded-full border-2 border-blue-500" }), _jsx("div", { className: "ml-4", children: _jsxs("p", { className: "text-lg font-bold text-gray-800", children: [item.user.name.first, " ", item.user.name.last] }) })] }), _jsx("p", { className: "text-gray-700 mt-2", children: item.fact })] }, index));
+                        return (_jsxs("div", { ref: isLastFact ? lastFactRef : null, className: "max-w-sm w-full lg:max-w-full lg:flex bg-white border rounded-lg shadow-md p-4", children: [_jsxs("div", { className: "flex items-center mb-4", children: [_jsx("img", { src: item.user.picture.thumbnail, alt: `${item.user.name.first} ${item.user.name.last}`, className: "w-16 h-16 rounded-full border-2 border-blue-500" }), _jsx("div", { className: "ml-4", children: _jsxs("p", { className: "text-lg font-bold text-gray-800", children: [item.user.name.first, " ", item.user.name.last] }) })] }), _jsx("p", { className: "text-gray-700 mt-2", children: item.fact })] }, index));
                     }) }, i))) }), isFetchingNextPage && (_jsx("p", { className: "text-center mt-4 text-blue-500", children: "Loading more..." }))] }));
 };
 export default CatFactsList;

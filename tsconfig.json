@@ -1,12 +1,7 @@
 {
   "compilerOptions": {
-    "skipLibCheck": true,
     "strict": false,
     "noEmitOnError": false,
-    "target": "ES6",
-    "module": "ESNext",
-    "jsx": "react-jsx",
-    "moduleResolution": "Node",
-    "esModuleInterop": true
+    "skipLibCheck": true
   }
 }
