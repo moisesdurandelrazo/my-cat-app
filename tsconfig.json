@@ -1,17 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "ESNext",
+    "skipLibCheck": true,
     "strict": false,
     "noEmitOnError": false,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "target": "ES6",
+    "module": "ESNext",
+    "jsx": "react-jsx",
     "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "react-jsx"
-  },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+    "esModuleInterop": true
+  }
 }

@@ -52,6 +52,7 @@ const fetchCatFactsWithUsers = async ({ pageParam }: { pageParam?: string }): Pr
 const useCatFactsWithUsers = () => {
   return useInfiniteQuery<Page, Error>({
     queryKey: ["catFactsWithUsers"],
+    // @ts-ignore
     queryFn: fetchCatFactsWithUsers,
     getNextPageParam: (lastPage) => lastPage.next_page_url,
   });

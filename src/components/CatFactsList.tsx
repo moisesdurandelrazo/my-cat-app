@@ -51,7 +51,7 @@ const CatFactsList = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {data?.pages.map((page: any, i: number) => (
           <React.Fragment key={i}>
-            {page.data.map((item, index) => {
+            {page.data.map((item: any, index: number) => {
               const isLastFact =
                 i === data.pages.length - 1 && index === page.data.length - 1;
               return (
